@@ -1,0 +1,115 @@
+#!perl
+#
+# This mkheader script makes two C header files,
+# $fmhfile and $tohfile (see below their values).
+# These files are used to build Lingua::AR::MacArabic.
+#
+use 5.006001;
+use strict;
+use warnings;
+
+my $mapfile = "arabic.map";
+my $addfile = "addition.map";
+
+my $wc = 'UV';
+my $mc = 'U8';
+my $dc = 'STDCHAR';
+
+my $fmhfile = "fmmacar.h";
+my $tohfile = "tomacar.h";
+my $encname = "mac_ar";
+
+open FM, ">$fmhfile" or die "$fmhfile $!" or die;
+open TO, ">$tohfile" or die "$tohfile $!" or die;
+binmode FM;
+binmode TO;
+
+my (%toUni, %fmUniR, %fmUniL, %fmUniN, %dir, $text);
+
+$text = '';
+
+for my $f ($addfile, $mapfile) {
+    open IN, "<$f" or die "$f $!";
+    binmode IN;
+    local $/ = undef;
+    $text .= <IN>;
+    $text .= "\n";
+    close IN;
+}
+
+for (split /[\r\n]/, $text) {
+    next if /^#/;
+    next if /^$/;
+
+    my @t = split;
+    my $e = hex $t[0];
+    next if ! $t[1];
+
+    die "ill-formed column 2"
+	unless $t[1] =~ /(?:<(RL|LR)>\+)?(0x[0-9A-Fa-f]+)/;
+
+    my $d = $1 || '';
+    my $u = hex $2;
+
+    die "$e > 255" if $e > 255;
+
+    my($a,$b) = unpack('CC', pack 'n', $u);
+
+    $toUni{$e} = $u;
+    $dir  {$e} = $d eq 'LR' ? 1 : $d eq 'RL' ? 2 : 0;
+    $fmUniL{$a}{$b} = $e if $d ne 'RL'; # L or neutral
+    $fmUniR{$a}{$b} = $e if $d ne 'LR'; # R or neutral
+    $fmUniN{$a}{$b} = $e if $d eq '';   # neutral
+}
+
+print FM "$wc fm_${encname}_tbl [256] = {\n";
+for (my $i = 0; $i < 256; $i++) {
+    printf FM "\t%d",
+	defined $toUni{$i} ? $toUni{$i} : 0;
+    print  FM ','  if $i != 255;
+    print  FM "\n" if $i % 8 == 7;
+}
+print FM "};\n\n";
+
+print FM "$dc fm_${encname}_dir [256] = {\n";
+for (my $i = 0; $i < 256; $i++) {
+    printf FM " %d",
+	defined $dir{$i} ? $dir{$i} : 0;
+    print  FM ','  if $i != 255;
+    print  FM "\n" if $i % 16 == 15;
+}
+print FM "};\n\n";
+
+my %fmUniHsh = (
+    L => \%fmUniL,
+    R => \%fmUniR,
+    N => \%fmUniN,
+);
+foreach my $dir (qw( L R N ) ) {
+    my $hsh = $fmUniHsh{$dir};
+    foreach my $le (sort { $a <=> $b } keys %$hsh) {
+	print TO "$mc to_${encname}_${le}_${dir} [256] = {\n";
+	for (my $i = 0; $i < 256; $i++) {
+	    printf TO "\t%d",
+		defined $hsh->{$le}{$i} ? $hsh->{$le}{$i} : 0;
+	    print  TO ','  if $i != 255;
+	    print  TO "\n" if $i % 8 == 7;
+	}
+	print TO "};\n\n";
+    }
+
+    print TO "$mc* to_${encname}_${dir} [] = {\n";
+    for (my $i = 0; $i < 256; $i++) {
+	print TO "\t",
+	    defined $hsh->{$i} ? "to_${encname}_${i}_${dir}" : "NULL";
+	print TO ','  if $i != 255;
+	print TO "\n" if $i % 8 == 7;
+    }
+    print TO "};\n\n\n";
+}
+
+close FM;
+close TO;
+
+1;
+__END__

@@ -1,0 +1,15 @@
+Revision history for Perl module Lingua::AR::MacArabic.
+
+0.03  Sat Feb 01 12:09:14 2003
+    - document modification.
+
+0.02  Sat Feb 01 01:37:51 2003
+    - *.map files are integrated.
+    - document modification.
+
+0.01  Wed Jan 29 23:12:20 2003
+    - fix: mapping for 0x00-0x1F and 0x7F should be also defined.
+    - ARABIC-INDIC DIGITs are mapped to 0x30 etc. in the LR direction.
+
+0.00  Sun Jan 26 20:47:56 2003
+    - original version;
