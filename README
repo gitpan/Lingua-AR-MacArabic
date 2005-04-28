@@ -1,9 +1,9 @@
-Lingua::AR::MacArabic version 0.03
+Lingua::AR::MacArabic version 0.04
 ================
 
 NAME
 
-Lingua::AR::MacArabic - transcode between Macintosh Arabic and Unicode
+Lingua::AR::MacArabic - transcoding between Mac OS Arabic encoding and Unicode
 
 SYNOPSIS
 
@@ -13,7 +13,7 @@ SYNOPSIS
     $octet = encodeMacArabic($wchar);
 
    # $wchar : a string in Perl's Unicode format
-   # $octet : a legacy-byte string (i.e. in MacArabic encoding)
+   # $octet : a string in MacOS Arabic encoding
 
 DEPENDENCIES
 
@@ -33,14 +33,11 @@ INSTALLATION
     make test
     make install
 
-COPYRIGHT AND LICENCE
+COPYRIGHT AND LICENSE
 
-    Tomoyuki SADAHIRO
+SADAHIRO Tomoyuki <SADAHIRO@cpan.org>
 
-        bqw10602@nifty.com
-        http://homepage1.nifty.com/nomenclator/perl/
+Copyright(C) 2003-2005, SADAHIRO Tomoyuki. Japan. All rights reserved.
 
-    Copyright(C) 2003-2003, SADAHIRO Tomoyuki. Japan. All rights reserved.
-
-    This module is free software; you can redistribute it
-    and/or modify it under the same terms as Perl itself.
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.

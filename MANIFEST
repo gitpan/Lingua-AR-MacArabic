@@ -1,12 +1,12 @@
 Changes
 Makefile.PL
-README
 MANIFEST
+META.yml
+README
 MacArabic.pm
 MacArabic.xs
 addition.map
 arabic.map
 mkheader
-t/enc.t
-t/qual.t
+t/argu.t
 t/test.t
