@@ -1,5 +1,8 @@
 Revision history for Perl module Lingua::AR::MacArabic.
 
+0.10  Sat Jan 22 20:38:52 2011
+    - xs: fix mixing STDCHAR and U8.
+
 0.04  Thu Apr 28 22:51:26 2005
     - upgraded according to updated ARABIC.TXT in www.unicode.org
       (though no character mapping is changed).

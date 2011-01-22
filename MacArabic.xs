@@ -26,7 +26,7 @@
 #define ToMacTblL	to_macar_L
 #define ToMacTblR	to_macar_R
 
-static U8 ** ToMacTbl [] = {
+static STDCHAR ** ToMacTbl [] = {
     ToMacTblN,
     ToMacTblL,
     ToMacTblR
@@ -123,7 +123,7 @@ encode(...)
     SV *src, *dst, *ref;
     STRLEN srclen, retlen;
     U8 *s, *e, *p;
-    U8 b, *t, **table;
+    STDCHAR b, *t, **table;
     UV uv;
     STDCHAR dir;
     bool has_cv = FALSE;
@@ -179,7 +179,7 @@ encode(...)
 	    else if (has_pv)
 		sv_catsv(dst, ref);
 	    else if (has_cv)
-		sv_cat_cvref (dst, ref, newSVuv(uv));
+		sv_cat_cvref(dst, ref, newSVuv(uv));
 	}
     }
     XPUSHs(dst);
