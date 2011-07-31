@@ -1,5 +1,8 @@
 Revision history for Perl module Lingua::AR::MacArabic.
 
+0.20  Sun Jul 31 19:33:07 2011
+    - fix the tarball with world writable files.
+
 0.10  Sat Jan 22 20:38:52 2011
     - xs: fix mixing STDCHAR and U8.
 

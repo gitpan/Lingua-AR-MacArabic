@@ -7,7 +7,7 @@ use strict;
 require Exporter;
 require DynaLoader;
 
-our $VERSION = '0.10';
+our $VERSION = '0.20';
 our @ISA = qw(Exporter DynaLoader);
 our @EXPORT = qw(decodeMacArabic encodeMacArabic);
 our @EXPORT_OK = qw(decode encode);
